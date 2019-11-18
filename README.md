@@ -34,7 +34,7 @@ rangelist_is_contains(const struct RangeList *targets, unsigned addr)
 1、IP地址可以转换成整数形式，严谨地说，应该是unsigned int，但long比较方便，不容易出错。
 2、一份好的GeoIP数据应当完全覆盖IPv4空间，每一条记录表示从ipStart到ipEnd中间所有的IP地址。每两条记录之间，连续，且互不重叠。
 
-##原理
+## 原理
 
 为了便于解读，下面表格中的IP用字符串形式做讲解
 
@@ -96,7 +96,7 @@ for colname in uTable.columns[1:-1]:
 
 最后根据flag字段过滤出样本记录，对列名做适当加工接即可。
 
-实际测试中：
+## 测试
 IP地址数量：5000万
 GeoIP记录数：380万
 Driver Memory：9G
