@@ -1,6 +1,6 @@
 # massive_geoip_join_spark
 
-一般地，GeoIP 通过CIDR或者段起始-段结束的方式去记录数据。
+一般地，GeoIP 通过CIDR或者段起始-段结束的方式去记录数据。</br>
 那么， 常规的GeoIP匹配，就是在所有记录中，查找IP地址所在的IP段，读取这条记录中的其他信息。
 
 
@@ -18,20 +18,20 @@ rangelist_is_contains(const struct RangeList *targets, unsigned addr)
     return 0;
 }
 ```
-上面是masscan中使用的函数，用于查找一个IP所属的IP段。
+上面是masscan中使用的函数，用于查找一个IP所属的IP段。</br>
 其原理是遍历所有记录，找到符合 range->begin <= addr && addr <= range->end 条件的记录。
 
 在实时的业务处理逻辑中，一般都使用此类方式进行。但在Spark中处理大批量数据时，不能在通过这种方式进行。
 
 假设：
-有一批5000万规模的IP地址样本，需要进行归属地匹配。
+有一批5000万规模的IP地址样本，需要进行归属地匹配。</br>
 如果使用比较段起始段结束的方式去匹配，需要匹配百亿次才能得出结果。(IPIP.net提供的城市级精度IP归属地数据共有约350万行记录)
 使用我的这种方式，可以在有限的时间内完成匹配。
 
 
 ## 概念
-请先知晓以下两个概念：
-1、IP地址可以转换成整数形式，严谨地说，应该是unsigned int，但long比较方便，不容易出错。
+请先知晓以下两个概念：</br>
+1、IP地址可以转换成整数形式，严谨地说，应该是unsigned int，但long比较方便，不容易出错。</br>
 2、一份好的GeoIP数据应当完全覆盖IPv4空间，每一条记录表示从ipStart到ipEnd中间所有的IP地址。每两条记录之间，连续，且互不重叠。
 
 ##原理
@@ -69,7 +69,7 @@ select ip as ipStart,unll as ipEnd,null as country,null as province,null as city
 | 171.71.14.2| null |  null  |  null  |  null |  1 |
 | ...| ... |  ...  |  ...  |  ... | 0 |
 
-这样，IP段数据与样本数据全部合并成一张表，仅靠flag字段做区分。
+这样，IP段数据与样本数据全部合并成一张表，仅靠flag字段做区分。</br>
 每一个待匹配的IP，紧跟着所属的IP段后面,只需要按照特定的当时填充null值即可.
 
 ```
@@ -115,8 +115,9 @@ for colname in uTable.columns[1:-1]:
 
 
 实际测试中：
-IP地址数量：5000万
-GeoIP记录数：380万
-Driver Memory：9G
-Executor: 4
-Time: 27s
+
+IP地址数量：5000万</br>
+GeoIP记录数：380万</br>
+Driver Memory：9G</br>
+Executor: 4</br>
+Time: 27s</br>
