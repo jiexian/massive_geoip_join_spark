@@ -34,11 +34,11 @@ rangelist_is_contains(const struct RangeList *targets, unsigned addr)
 1、IP地址可以转换成整数形式，严谨地说，应该是unsigned int，但long比较方便，不容易出错。</br>
 2、一份好的GeoIP数据应当完全覆盖IPv4空间，每一条记录表示从ipStart到ipEnd中间所有的IP地址。每两条记录之间，连续，且互不重叠。
 
-##原理
+## 原理
 
 为了便于解读，下面表格中的IP用字符串形式做讲解
 
-select ipStart,ipEnd,country,province,city,'0' as flag from where.your_geoip_stored order by ipStart asc
+	select ipStart,ipEnd,country,province,city,'0' as flag from where.your_geoip_stored order by ipStart asc
 
 | ipStart | ipEnd | country | province | city | flag |
 |---------|-------|---------|----------|------|------|
@@ -48,7 +48,7 @@ select ipStart,ipEnd,country,province,city,'0' as flag from where.your_geoip_sto
 | ...| ... |  ...  |  ...  |  ... | 0 |
 
 
-select ip as ipStart,unll as ipEnd,null as country,null as province,null as city,'1' as flag from your.sample
+	select ip as ipStart,unll as ipEnd,null as country,null as province,null as city,'1' as flag from your.sample
 
 | ipStart | ipEnd | country | province | city | flag |
 |---------|-------|---------|----------|------|------|
